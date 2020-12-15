@@ -5,6 +5,7 @@ using UnityEngine;
 public class TetrisManager : MonoBehaviour
 {
     #region 欄位
+
     [Header("掉落時間"), Range(0.1F, 3)]
     public float timaFall = 1.5F;
     [Header("目前分數")]
@@ -20,6 +21,7 @@ public class TetrisManager : MonoBehaviour
     public AudioClip SoundMove;
     public AudioClip SoundClear;
     public AudioClip SoundLose;
+
     #endregion
 
     #region 事件
@@ -37,9 +39,10 @@ public class TetrisManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 添加分數
+    /// 分數增加
     /// </summary>
-    private void Add_score()
+    /// <param name="add">要增加的分數</param>
+    private void Add_score(int add)
     {
 
     }
