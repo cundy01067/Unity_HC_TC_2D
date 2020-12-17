@@ -1,5 +1,6 @@
 ﻿//此本為遊戲場景控制器
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class TetrisManager : MonoBehaviour
@@ -21,21 +22,74 @@ public class TetrisManager : MonoBehaviour
     public AudioClip SoundMove;
     public AudioClip SoundClear;
     public AudioClip SoundLose;
+    
+    /// <summary>
+    /// 遊戲開始按鈕_欄位(按鈕_UI)
+    /// </summary>
+   [Header("遊戲開始按鈕") ]
+    public Button StartGame;
+
+    /// <summary>
+    /// 下一個方塊_欄位
+    /// </summary>
+    [Header("下一個方塊") , Tooltip("方塊編號")]
+    public Transform TraNextArea;
+
+    /// <summary>
+    /// 下一顆方塊的編號
+    /// </summary>
+    public int Index_Next;
+
+    /// <summary>
+    /// 畫布_欄位
+    /// </summary>
+    [Header("畫布")]
+    public Transform TraCanvas;
 
     #endregion
 
     #region 事件
 
+    private void Start()
+    {
+        //呼叫方塊生成方法
+        Block_generation();
 
+        StartGame.onClick.AddListener(Start_game);
+
+    }
+
+    
     #endregion
 
     #region 方法
     /// <summary>
+    /// 遊戲開始按鈕_方法
+    /// </summary>
+    public void Start_game()
+    {
+        //按下之後隱藏按鈕
+        StartGame.gameObject.SetActive(false);
+        //把資料存在 tetris 裡面
+        GameObject tetris = TraNextArea.GetChild(Index_Next).gameObject;
+        //Instantiate(實例化)生成物件 , 放到父物件裡面
+        GameObject Current = Instantiate(tetris, TraCanvas);
+        //校準初始生成位置
+        Current.GetComponent<RectTransform>().anchoredPosition = new Vector2(85, 350);
+    }
+    /// <summary>
     /// 方塊生成
     /// </summary>
-    private void Block_generation()
+    public void Block_generation()
     {
+        //給下一顆方塊編號
+        Index_Next = Random.Range(0, 12);
+        //顯示右邊下一顆方塊
+        TraNextArea.GetChild(Index_Next).gameObject.SetActive(true);
+        
 
+
+        
     }
 
     /// <summary>
