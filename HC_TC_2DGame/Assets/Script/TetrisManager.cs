@@ -2,7 +2,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-
 public class TetrisManager : MonoBehaviour
 {
     #region 欄位
@@ -26,19 +25,27 @@ public class TetrisManager : MonoBehaviour
     /// <summary>
     /// 遊戲開始按鈕_欄位(按鈕_UI)
     /// </summary>
-    [Header("遊戲開始按鈕")]
+    [Header("遊戲開始按鈕_UI")]
     public Button StartGame;
+    //判斷遊戲開始按鈕是否被按下
+    private bool StartGame_if;
+
 
     /// <summary>
     /// 下一個方塊_欄位
     /// </summary>
-    [Header("下一個方塊"), Tooltip("方塊編號")]
+    [Header("下一個方塊"), Tooltip("下一個方快_欄位")]
     public Transform TraNextArea;
 
     /// <summary>
     /// 下一顆方塊的編號
     /// </summary>
-    public int Index_Next;
+    private int Cube_Next;
+    [Header("當前的方塊")]
+    /// <summary>
+    /// 當前的方塊
+    /// </summary>
+    public RectTransform Current_Cube;
 
     /// <summary>
     /// 畫布_欄位
@@ -47,35 +54,61 @@ public class TetrisManager : MonoBehaviour
     public Transform TraCanvas;
 
 
-    
+
     #endregion
 
     #region 事件
 
     private void Start()
     {
+        #region 控制        
+        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
+        {
 
+        }
+        if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
+        {
 
-        //按下開始之後呼叫方塊生成方法(Block_generation)
-        StartGame.onClick.AddListener(Block_generation);
-        //按下開始遊戲呼叫(Start_game)方法
-        StartGame.onClick.AddListener(Start_game);
+        }
+        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
+        {
+
+        }
+        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
+        {
+
+        }
+        #endregion
+
+        //開始按鈕被按下後 呼叫(Start_Down)方法
+        StartGame.onClick.AddListener(Start_Down);
+
 
         
-
-
-
     }
 
+    private void Update()
+    {
+
+    }
 
     #endregion
 
     #region 方法
-    //判斷開始遊戲是否被按下
-    public bool If_Start_OnClick()
+
+
+    /// <summary>
+    /// 開始按鈕被按下後執行
+    /// </summary>
+    public void Start_Down()
     {
-        //StartGame.onClick();
-        return true;
+        StartGame_if = true;
+        if (StartGame_if == true)
+        {
+            Block_generation();
+            Start_game();
+            
+        }
     }
 
     /// <summary>
@@ -86,29 +119,31 @@ public class TetrisManager : MonoBehaviour
         //按下之後隱藏按鈕
         StartGame.gameObject.SetActive(false);
         //把資料存在 tetris 裡面
-        GameObject tetris = TraNextArea.GetChild(Index_Next).gameObject;
+        GameObject tetris = TraNextArea.GetChild(Cube_Next).gameObject;
         //Instantiate(實例化)生成物件 , 放到父物件裡面
         GameObject Current = Instantiate(tetris, TraCanvas);
         //校準初始生成位置  
         Current.GetComponent<RectTransform>().anchoredPosition = new Vector2(50, 450);
+        //隱藏方快
+        tetris.SetActive(false);
+        //取得下一顆隨機方快
+        Block_generation();
+
+        //儲存當前的方塊
+        Current_Cube = Current.GetComponent<RectTransform>();
     }
 
-    public void Update()
-    {
 
-    }
     /// <summary>
     /// 生成下一顆方塊
     /// </summary>
     public void Block_generation()
     {
-        
+
         //給下一顆方塊編號
-        Index_Next = Random.Range(0, 12);
+        Cube_Next = Random.Range(0, 12);
         //顯示右邊下一顆方塊
-        TraNextArea.GetChild(Index_Next).gameObject.SetActive(true);
-        //必定要傳回
-        
+        TraNextArea.GetChild(Cube_Next).gameObject.SetActive(true);
 
     }
 
